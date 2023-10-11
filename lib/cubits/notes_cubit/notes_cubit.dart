@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:bloc/bloc.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:meta/meta.dart';
@@ -9,11 +11,17 @@ part 'notes_state.dart';
 class NotesCubit extends Cubit<NotesState> {
   NotesCubit() : super(NotesInitial());
 
+  List<NoteModel>? notes;
+
   fetchAllNotes() {
-    try {
-      var notesBox = Hive.box(kNotesBox);
-      List<dynamic> notes = notesBox.values.toList();
-      emit(NotesSuccess(notes as List<NoteModel>));
-    } catch (e) {}
+    var notesBox = Hive.box<NoteModel>(kNotesBox);
+    notes = notesBox.values.toList();
+    emit(NotesSuccess());
+  }
+
+  updateColor({required NoteModel note, Color? color}) {
+    note.color = color?.value ?? note.color;
+    note.save();
+    emit(NotesSuccess());
   }
 }

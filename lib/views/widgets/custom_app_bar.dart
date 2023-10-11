@@ -3,14 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:notes_app/views/widgets/custom_icon.dart';
 
 class CustomAppBar extends StatelessWidget {
-  const CustomAppBar({
-    Key? key,
-    required this.title,
-    required this.iconData,
-  }) : super(key: key);
+  const CustomAppBar(
+      {Key? key, required this.title, required this.iconData, this.onPressed})
+      : super(key: key);
 
   final String title;
   final IconData iconData;
+  final void Function()? onPressed;
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -22,7 +21,10 @@ class CustomAppBar extends StatelessWidget {
             style: const TextStyle(fontSize: 29),
           ),
           const Spacer(),
-          CustomIcon(icon: iconData),
+          CustomIcon(
+            icon: iconData,
+            onPressed: onPressed,
+          ),
         ],
       ),
     );
